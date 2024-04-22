@@ -2,7 +2,7 @@
 
 namespace Aweton.Mxw.BackEndApi.Controllers;
 
-public static class ActivitySourceAcessorExtentions
+public static class ActivitySourceAccessorExtensions
 {
   public static IServiceCollection AddActivitySource(this IServiceCollection services, string name)
   {
