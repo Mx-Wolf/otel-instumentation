@@ -8,15 +8,11 @@ public class WeatherForecastController(
   IWeatherForecastService weatherForecastService, 
   IActivitySourceAccessor activitySourceAccessor) :ControllerBase
 {
-  private readonly ILogger<WeatherForecastController> logger = logger;
-  private readonly IWeatherForecastService weatherForecastService = weatherForecastService;
-  private readonly IActivitySourceAccessor activitySourceAccessor = activitySourceAccessor;
-
-  [HttpGet(Name = "GetWeatherForecast")]
+    [HttpGet(Name = "GetWeatherForecast")]
   public IEnumerable<WeatherForecast> Get()
   {
-    using var activity = activitySourceAccessor.ActivitySource.StartActivity("Get weather forecast");
-    using var a = logger.BeginScope(new Dictionary<string, string> { ["method"]="Get", ["scoped"]="true" });
+    using var activity = activitySourceAccessor.ActivitySource.StartActivity();
+    using var a = logger.BeginScope(new Dictionary<string, string> { ["demo-method"]="Demo-Get", ["demo-scoped"]="demo-true" });
     logger.DebugRequestReceived();
     return weatherForecastService.GenerateForecast2();
   }
