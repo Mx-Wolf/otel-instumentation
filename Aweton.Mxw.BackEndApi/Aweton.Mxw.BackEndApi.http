@@ -1,0 +1,6 @@
+@Aweton.Mxw.BackEndApi_HostAddress = http://localhost:5131
+
+GET {{Aweton.Mxw.BackEndApi_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
