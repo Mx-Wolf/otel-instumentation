@@ -1,4 +1,6 @@
-﻿namespace Aweton.Mxw.BackEndApi.Controllers
+﻿using DotPulsar;
+
+namespace Aweton.Mxw.BackEndApi.Controllers
 {
   internal static partial class LoggerMessagesExtensions
   {
@@ -13,8 +15,8 @@
     public static partial void ControllerLevelErrorLogging(this ILogger logger, Exception ex);
     [LoggerMessage(Level = LogLevel.Error, Message = "Controller Level scope logging without exception")]
     public static partial void ControllerLevelScopeLogging(this ILogger logger);
-    [LoggerMessage(Level=LogLevel.Debug,  Message = "producing forecast for day# {offset}")]
-    public static partial void AccurateWeatherActionLog(this ILogger logger, int offset);
+    [LoggerMessage(Level=LogLevel.Debug,  Message = "producing forecast for day# {offset}, id: {id}")]
+    public static partial void AccurateWeatherActionLog(this ILogger logger, int offset, MessageId? id);
     [LoggerMessage(Level = LogLevel.Error, Message = "Request validation error")]
     public static partial void ValidationError(this ILogger logger, Exception exception);
   }

@@ -9,13 +9,18 @@ using OpenTelemetry.Resources;
 using OpenTelemetry.Trace;
 
 const string sourceName = "Aweton.Mxw.PulsarWorker";
+const string subscriptionName = "Aweton.Mxw.DemoSubscription";
 
 var builder = Host.CreateApplicationBuilder();
 builder.Services
   .AddHostedService<DemoWorker>()
   .AddActivitySource(sourceName)
   .AddTransient<IMessageHandler, MessageHandler>()
-  .AddSingleton(() => PulsarClient.Builder().Build().NewConsumer(Schema.String).Topic("persistent://public/default/mytopic").Create());
+  .AddSingleton((x) => PulsarClient.Builder().Build()
+    .NewConsumer(Schema.String)
+    .SubscriptionName(subscriptionName)
+    .Topic("persistent://public/default/mytopic")
+    .Create());
 
 builder.Services.AddOpenTelemetry()
   .ConfigureResource((b) =>

@@ -1,0 +1,11 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "C#: Aweton.Mxw.BackEndApi [Default Configuration]",
+      "type": "dotnet",
+      "request": "launch",
+      "projectPath": "${workspaceFolder}\\Aweton.Mxw.BackEndApi\\Aweton.Mxw.BackEndApi.csproj"
+    }
+  ]
+}

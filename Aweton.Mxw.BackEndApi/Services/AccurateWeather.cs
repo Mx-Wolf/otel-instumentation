@@ -26,8 +26,8 @@ namespace Aweton.Mxw.BackEndApi.Services
     public async Task<WeatherForecast> Forecast(int index)
     {
       var theDate = DateOnly.FromDateTime(systemClock.UtcNow.DateTime.AddDays(index));
-      await auditProducer.Send(Prepare(), theDate.ToString("o"));
-      logger.AccurateWeatherActionLog(index);
+      var id = await auditProducer.Send(Prepare(), theDate.ToString("o"));      
+      logger.AccurateWeatherActionLog(index, id);
       if (index > 7)
       {
         throw new ArgumentException("too many");
@@ -42,11 +42,19 @@ namespace Aweton.Mxw.BackEndApi.Services
 
     private MessageMetadata Prepare()
     {
+      var (traceparent, tracestate) = (Activity.Current?.Id,  Activity.Current?.TraceStateString);
       return new MessageMetadata()
-      {
-        ["traceparent"] = Activity.Current?.Id,
-        ["tracestate"] = Activity.Current?.TraceStateString,
-      };
+      .AddProperty("traceparent", traceparent)
+      .AddProperty("tracestate",tracestate);
     }
+  }
+}
+
+internal static class MessageMetadataExtensions{
+  public static MessageMetadata AddProperty(this MessageMetadata self, string name, string? value){
+    if(!string.IsNullOrWhiteSpace(value)){
+      self[name] = value;
+    }
+    return self;
   }
 }
