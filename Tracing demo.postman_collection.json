@@ -1,0 +1,231 @@
+{
+	"info": {
+		"_postman_id": "da2a52f1-ac04-408d-994d-1d1b6eb1fea4",
+		"name": "Tracing demo",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "17425135"
+	},
+	"item": [
+		{
+			"name": "simple valid request",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Forecast array lenght\", () => {\r",
+							"    pm.expect(pm.response.json().length).to.be.equal(Number.parseInt(pm.variables.get(\"days\")));\r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{baseUrl}}/{{weatherForecast}}/?count={{days}}",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"{{weatherForecast}}",
+						""
+					],
+					"query": [
+						{
+							"key": "count",
+							"value": "{{days}}"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "invalid days count",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 400\", function () {\r",
+							"    pm.response.to.have.status(400);\r",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{baseUrl}}/{{weatherForecast}}/?count={{invalid-days}}",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"{{weatherForecast}}",
+						""
+					],
+					"query": [
+						{
+							"key": "count",
+							"value": "{{invalid-days}}"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "invalid days count with tracing context",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Forecast array lenght\", () => {\r",
+							"    pm.expect(pm.response.json().length).to.be.equal(Number.parseInt(pm.variables.get(\"days\")));\r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "traceparent",
+						"value": "00-0af7651916cd43dd8448eb211c80319c-b7ad6b7169203331-01",
+						"type": "text"
+					},
+					{
+						"key": "tracestate",
+						"value": "congo=t61rcWkgMzE",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "{{baseUrl}}/{{weatherForecast}}/?count={{invalid-days}}",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"{{weatherForecast}}",
+						""
+					],
+					"query": [
+						{
+							"key": "count",
+							"value": "{{invalid-days}}"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "valid with tracing context",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Forecast array lenght\", () => {\r",
+							"    pm.expect(pm.response.json().length).to.be.equal(Number.parseInt(pm.variables.get(\"days\")));\r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "traceparent",
+						"value": "00-0af7651916cd43dd8448eb211c80319c-b9c7c989f97918e1-01",
+						"type": "text"
+					},
+					{
+						"key": "tracestate",
+						"value": "congo=ucfJifl5GOE,rojo=00f067aa0ba902b7",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "{{baseUrl}}/{{weatherForecast}}/?count={{days}}",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"{{weatherForecast}}",
+						""
+					],
+					"query": [
+						{
+							"key": "count",
+							"value": "{{days}}"
+						}
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "baseUrl",
+			"value": "https://localhost:7188",
+			"type": "string"
+		},
+		{
+			"key": "weatherForecast",
+			"value": "weather-forecast",
+			"type": "string"
+		},
+		{
+			"key": "days",
+			"value": "6",
+			"type": "string"
+		},
+		{
+			"key": "invalid-days",
+			"value": "15",
+			"type": "string"
+		}
+	]
+}
