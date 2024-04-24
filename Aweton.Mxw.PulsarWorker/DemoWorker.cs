@@ -4,14 +4,16 @@ using DotPulsar.Abstractions;
 using DotPulsar.Extensions;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Logging;
 
 namespace Aweton.Mxw.PulsarWorker;
 
-internal class DemoWorker(IConsumer<string> consumer, IServiceProvider serviceProvider, IActivitySourceAccessor activitySourceAccessor) : BackgroundService
+internal class DemoWorker(IConsumer<string> consumer, ILogger<DemoWorker> logger, IServiceProvider serviceProvider, IActivitySourceAccessor activitySourceAccessor) : BackgroundService
 {
 
   protected override async Task ExecuteAsync(CancellationToken stoppingToken)
   {
+    logger.DebugBeforeLoop();
     await foreach (var message in consumer.Messages(stoppingToken))
     {
       var result = await HandleNextMessage(message, stoppingToken);
@@ -20,6 +22,8 @@ internal class DemoWorker(IConsumer<string> consumer, IServiceProvider servicePr
         await consumer.Acknowledge(message, stoppingToken);
       }
     }
+
+    logger.DebugExitingLoop();
   }
 
   private async Task<bool> HandleNextMessage(IMessage<string> message, CancellationToken stoppingToken)
