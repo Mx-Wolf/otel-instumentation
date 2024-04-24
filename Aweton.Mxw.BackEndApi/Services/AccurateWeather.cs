@@ -3,7 +3,9 @@ using Aweton.Mxw.BackEndApi.Abstraction;
 using Aweton.Mxw.BackEndApi.Controllers;
 using DotPulsar;
 using DotPulsar.Abstractions;
+using DotPulsar.Extensions;
 using Microsoft.Extensions.Internal;
+using Serilog.Configuration;
 
 namespace Aweton.Mxw.BackEndApi.Services
 {
@@ -25,13 +27,35 @@ namespace Aweton.Mxw.BackEndApi.Services
 
     public async Task<WeatherForecast> Forecast(int index)
     {
+      try
+      {
+        return await GetForecastInternal(index);
+      }
+      catch (Exception ex) when (Logged(index, ex))
+      {
+        throw;
+      }
+    }
+
+    private bool Logged(int index, Exception exception)
+    {
+      logger.ErrorForecasting(index, exception);
+      return true;
+    }
+
+    private async Task<WeatherForecast> GetForecastInternal(int index)
+    {
       var theDate = DateOnly.FromDateTime(systemClock.UtcNow.DateTime.AddDays(index));
-      var id = await auditProducer.Send(Prepare(), theDate.ToString("o"));      
-      logger.AccurateWeatherActionLog(index, id);
+      using var cts = new CancellationTokenSource();
+      cts.CancelAfter(TimeSpan.FromSeconds(2));
+      //var id = await auditProducer.Send(Prepare(), theDate.ToString("o"), cts.Token);      
+      logger.AccurateWeatherActionLog(index, null);
+      await Task.CompletedTask;
       if (index > 7)
       {
         throw new ArgumentException("too many");
       }
+
       return new WeatherForecast
       {
         Date = theDate,
@@ -47,14 +71,5 @@ namespace Aweton.Mxw.BackEndApi.Services
       .AddProperty("traceparent", traceparent)
       .AddProperty("tracestate",tracestate);
     }
-  }
-}
-
-internal static class MessageMetadataExtensions{
-  public static MessageMetadata AddProperty(this MessageMetadata self, string name, string? value){
-    if(!string.IsNullOrWhiteSpace(value)){
-      self[name] = value;
-    }
-    return self;
   }
 }

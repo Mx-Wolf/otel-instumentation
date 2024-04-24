@@ -9,8 +9,7 @@ namespace Aweton.Mxw.BackEndApi.Services
     {
       using var x = logger.BeginScope(("forecasting", daysToForecast));
       logger.InfoProducingForecast(daysToForecast);
-      return await Task.WhenAll(Enumerable.Range(1, daysToForecast).Select(accurateWeather.Forecast)
-              .ToArray());
+      return await Task.WhenAll(Enumerable.Range(1, daysToForecast).Select(accurateWeather.Forecast));
     }
   }
 }

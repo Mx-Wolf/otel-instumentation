@@ -31,20 +31,22 @@ builder.Services
     .AddActivitySource(resourceName)
     .AddScoped<IValidator<WeatherForecastRequest>,WeatherForecastRequestValidator>()
     .AddSingleton<ISystemClock,PlatformSystemClock>()
-    .AddSingleton((x)=>PulsarClient.Builder().Build().NewProducer(Schema.String).Topic("persistent://public/default/mytopic").Create());
+    .AddSingleton((x)=>PulsarClient.Builder().Build().NewProducer(Schema.String).Topic("persistent://public/default/mytopic").Create())
+    ;
 
 builder.Host.UseSerilog((context, services, loggerConfiguration) =>
 {
-    loggerConfiguration.ReadFrom.Configuration(context.Configuration);
+  loggerConfiguration.ReadFrom.Configuration(context.Configuration);
 });
 builder.Services.AddOpenTelemetry()
-  .ConfigureResource(b=>b.AddService(resourceName))
-  .WithTracing(b=>{
+  .ConfigureResource(b => b.AddService(resourceName))
+  .WithTracing(b =>
+  {
     b.AddConsoleExporter();
     b.AddAspNetCoreInstrumentation();
     b.AddSource(resourceName);
   })
-  .WithMetrics(b=>b.AddConsoleExporter());
+  .WithMetrics(b => b.AddConsoleExporter());
 
 var app = builder.Build();
 

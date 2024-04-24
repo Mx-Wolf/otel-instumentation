@@ -17,9 +17,9 @@ public class WeatherForecastController(
   [HttpGet(Name = "weather-forecast")]
   public async Task<IEnumerable<WeatherForecast>> Get([FromQuery] WeatherForecastRequest request)
   {
+    
     try
     {
-
       using var activity = activitySourceAccessor.ActivitySource.StartActivity();
       using var a = logger.BeginScope(new Dictionary<string, string> { ["demo-method"] = "Demo-Get", ["demo-scoped"] = "demo-true" });
       logger.DebugRequestReceived(request.Count);
