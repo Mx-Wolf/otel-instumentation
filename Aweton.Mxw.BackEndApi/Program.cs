@@ -1,7 +1,11 @@
 using Aweton.Mxw.BackEndApi.Abstraction;
 using Aweton.Mxw.BackEndApi.Controllers;
 using Aweton.Mxw.BackEndApi.Services;
+using Aweton.Mxw.Toolkit;
+using DotPulsar;
+using DotPulsar.Extensions;
 using FluentValidation;
+using Microsoft.Extensions.Internal;
 using OpenTelemetry.Metrics;
 using OpenTelemetry.Resources;
 using OpenTelemetry.Trace;
@@ -25,7 +29,9 @@ builder.Services
     .AddSingleton<IWeatherForecastService, WeatherForecastService>()
     .AddSingleton<IAccurateWeather, AccurateWeather>()
     .AddActivitySource(resourceName)
-    .AddScoped<IValidator<WeatherForecastRequest>,WeatherForecastRequestValidator>();
+    .AddScoped<IValidator<WeatherForecastRequest>,WeatherForecastRequestValidator>()
+    .AddSingleton<ISystemClock,PlatformSystemClock>()
+    .AddSingleton(()=>PulsarClient.Builder().Build().NewProducer(Schema.String).Topic("persistent://public/default/mytopic").Create());
 
 builder.Host.UseSerilog((context, services, loggerConfiguration) =>
 {

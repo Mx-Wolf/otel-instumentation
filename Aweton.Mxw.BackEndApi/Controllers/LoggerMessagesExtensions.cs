@@ -9,8 +9,10 @@
 
     [LoggerMessage(Level = LogLevel.Error, Message = "Central Error Logging Point")]
     public static partial void CentralErrorLogged(this ILogger logger, Exception exception);
-    [LoggerMessage(Level = LogLevel.Error, Message = "ControllerLevelErrorLogging")]
+    [LoggerMessage(Level = LogLevel.Error, Message = "Controller Level Exception Logging")]
     public static partial void ControllerLevelErrorLogging(this ILogger logger, Exception ex);
+    [LoggerMessage(Level = LogLevel.Error, Message = "Controller Level scope logging without exception")]
+    public static partial void ControllerLevelScopeLogging(this ILogger logger);
     [LoggerMessage(Level=LogLevel.Debug,  Message = "producing forecast for day# {offset}")]
     public static partial void AccurateWeatherActionLog(this ILogger logger, int offset);
     [LoggerMessage(Level = LogLevel.Error, Message = "Request validation error")]

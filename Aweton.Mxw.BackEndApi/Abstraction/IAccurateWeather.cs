@@ -2,6 +2,6 @@
 {
     public interface IAccurateWeather
     {
-        WeatherForecast Forecast(int index);
+        Task<WeatherForecast> Forecast(int index);
     }
 }

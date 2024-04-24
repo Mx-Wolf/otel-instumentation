@@ -1,7 +1,7 @@
 ﻿using System.Diagnostics;
-using Aweton.Mxw.BackEndApi.Abstraction;
+using Microsoft.Extensions.DependencyInjection;
 
-namespace Aweton.Mxw.BackEndApi.Services;
+namespace Aweton.Mxw.Toolkit;
 
 public static class ActivitySourceAccessorExtensions
 {

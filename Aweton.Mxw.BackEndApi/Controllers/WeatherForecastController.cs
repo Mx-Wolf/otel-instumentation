@@ -1,6 +1,8 @@
 using Aweton.Mxw.BackEndApi.Abstraction;
+using Aweton.Mxw.Toolkit;
 using FluentValidation;
 using Microsoft.AspNetCore.Mvc;
+#pragma warning disable S2737
 
 namespace Aweton.Mxw.BackEndApi.Controllers;
 
@@ -25,16 +27,15 @@ public class WeatherForecastController(
       return await weatherForecastService.GenerateForecast(request.Count);
    
     }
-    catch (Exception e) when (Logged(e))
+    catch when (Logged())
     {
-      e.Data["controller"] = "handled";
       throw;
     }
   }
 
-  private bool Logged(Exception exception)
+  private bool Logged()
   {
-    logger.ControllerLevelErrorLogging(exception);
-    return true;
+    logger.ControllerLevelScopeLogging();
+    return false;
   }
 }

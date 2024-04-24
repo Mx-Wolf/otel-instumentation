@@ -1,6 +1,6 @@
 ﻿using System.Diagnostics;
 
-namespace Aweton.Mxw.BackEndApi.Abstraction;
+namespace Aweton.Mxw.Toolkit;
 
 public interface IActivitySourceAccessor
 {
