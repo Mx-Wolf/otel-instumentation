@@ -8,6 +8,7 @@
 
   <ItemGroup>
     <PackageReference Include="DotPulsar" Version="3.2.0" />
+    <PackageReference Include="FluentValidation.DependencyInjectionExtensions" Version="11.9.0" />
     <PackageReference Include="OpenTelemetry.Exporter.Console" Version="1.8.1" />
     <PackageReference Include="OpenTelemetry.Extensions.Hosting" Version="1.8.1" />
     <PackageReference Include="OpenTelemetry.Instrumentation.AspNetCore" Version="1.8.1" />
