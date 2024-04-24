@@ -48,7 +48,7 @@ namespace Aweton.Mxw.BackEndApi.Services
       var theDate = DateOnly.FromDateTime(systemClock.UtcNow.DateTime.AddDays(index));
       using var cts = new CancellationTokenSource();
       cts.CancelAfter(TimeSpan.FromSeconds(2));
-      //var id = await auditProducer.Send(Prepare(), theDate.ToString("o"), cts.Token);      
+      var id = await auditProducer.Send(Prepare(), theDate.ToString("o"), cts.Token);      
       logger.AccurateWeatherActionLog(index, null);
       await Task.CompletedTask;
       if (index > 7)

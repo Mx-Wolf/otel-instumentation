@@ -31,7 +31,10 @@ builder.Services
     .AddActivitySource(resourceName)
     .AddScoped<IValidator<WeatherForecastRequest>,WeatherForecastRequestValidator>()
     .AddSingleton<ISystemClock,PlatformSystemClock>()
-    .AddSingleton((x)=>PulsarClient.Builder().Build().NewProducer(Schema.String).Topic("persistent://public/default/mytopic").Create())
+    .AddSingleton((x)=>PulsarClient.Builder().Build()
+    .NewProducer(Schema.String)
+    .Topic("persistent://public/default/mytopic")
+    .Create())
     ;
 
 builder.Host.UseSerilog((context, services, loggerConfiguration) =>
