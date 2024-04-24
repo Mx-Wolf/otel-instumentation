@@ -33,4 +33,5 @@ builder.Services.AddOpenTelemetry()
     b.AddSource(sourceName);
   });
 
-await builder.Build().RunAsync();
+builder.Build().Run();
+Console.ReadLine();
